@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Riwayat Booking — Wan Hotel</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
+  <link rel="stylesheet" href="/css/style.css"/>
+</head>
+<body>
+
+<nav class="navbar navbar-wan navbar-expand-lg">
+  <div class="container">
+    <a class="navbar-brand" href="/index.html">Wan<span>Hotel</span></a>
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navMenu">
+      <ul class="navbar-nav me-auto ms-3">
+        <li class="nav-item"><a class="nav-link" href="/index.html">Beranda</a></li>
+        <li class="nav-item"><a class="nav-link" href="/rooms.html">Kamar</a></li>
+        <li class="nav-item"><a class="nav-link active" href="/booking-history.html">Riwayat</a></li>
+      </ul>
+      <div id="nav-auth" class="d-flex align-items-center gap-2"></div>
+    </div>
+  </div>
+</nav>
+
+<div style="background:linear-gradient(135deg,#0064D2,#003F8A);padding:36px 0 28px;">
+  <div class="container">
+    <h1 class="text-white fw-800 mb-1" style="font-size:1.8rem;font-weight:800;"><i class="bi bi-clock-history me-2"></i>Riwayat Booking</h1>
+    <p style="color:rgba(255,255,255,0.8);margin:0;font-size:0.9rem;">Kelola semua pemesanan kamar Anda</p>
+  </div>
+</div>
+
+<div class="container py-4">
+  <!-- Filter Tabs -->
+  <div class="d-flex gap-2 flex-wrap mb-4">
+    <button class="btn btn-primary btn-sm px-4" style="border-radius:20px;" onclick="filterBookings('all', this)" id="tab-all">Semua</button>
+    <button class="btn btn-outline-secondary btn-sm px-4" style="border-radius:20px;" onclick="filterBookings('pending', this)">Pending</button>
+    <button class="btn btn-outline-secondary btn-sm px-4" style="border-radius:20px;" onclick="filterBookings('confirmed', this)">Confirmed</button>
+    <button class="btn btn-outline-secondary btn-sm px-4" style="border-radius:20px;" onclick="filterBookings('checked_out', this)">Selesai</button>
+    <button class="btn btn-outline-secondary btn-sm px-4" style="border-radius:20px;" onclick="filterBookings('cancelled', this)">Dibatalkan</button>
+  </div>
+
+  <!-- Booking List -->
+  <div id="booking-list">
+    <div class="text-center py-5">
+      <div class="spinner-border text-primary"></div>
+      <p class="mt-3 text-muted">Memuat riwayat booking...</p>
+    </div>
+  </div>
+</div>
+
+<!-- Proof Image Modal -->
+<div class="modal fade" id="proofModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow" style="border-radius:16px;">
+      <div class="modal-header border-0">
+        <h5 class="modal-title fw-700">Bukti Pembayaran</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body text-center p-4">
+        <img id="proof-img" src="" class="img-fluid img-proof w-100" alt="Bukti Pembayaran"/>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer-wan mt-5">
+  <div class="container text-center">
+    <div class="footer-brand">Wan<span>Hotel</span></div>
+    <div class="footer-bottom mt-3">© 2026 WanHotel. All rights reserved.</div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/js/api.js"></script>
+<script src="/js/auth.js"></script>
+<script>
+  updateNavbar();
+  if (!requireAuth()) {}
+
+  let allBookings = [];
+
+  function filterBookings(status, btn) {
+    document.querySelectorAll('[onclick^="filterBookings"]').forEach(b => {
+      b.className = 'btn btn-outline-secondary btn-sm px-4';
+      b.style.borderRadius = '20px';
+    });
+    btn.className = 'btn btn-primary btn-sm px-4';
+    btn.style.borderRadius = '20px';
+
+    const filtered = status === 'all' ? allBookings : allBookings.filter(b => b.status === status);
+    renderBookings(filtered);
+  }
+
+  function showProof(url) {
+    document.getElementById('proof-img').src = '' + url;
+    new bootstrap.Modal(document.getElementById('proofModal')).show();
+  }
+
+  function renderBookings(list) {
+    const container = document.getElementById('booking-list');
+    if (list.length === 0) {
+      container.innerHTML = `
+        <div class="no-data">
+          <i class="bi bi-calendar-x"></i>
+          <h5 class="mt-3">Belum ada booking</h5>
+          <p class="text-muted">Anda belum memiliki riwayat booking di filter ini.</p>
+          <a href="/rooms.html" class="btn btn-wan-primary px-4 mt-2">Cari Kamar</a>
+        </div>`;
+      return;
+    }
+
+    container.innerHTML = list.map(b => {
+      const nights = diffDays(b.check_in, b.check_out);
+      const canUpload = b.status === 'pending' && b.payment_status === 'pending';
+      const hasProof  = b.proof_image;
+
+      return `
+        <div class="booking-card mb-3">
+          <div class="booking-header d-flex justify-content-between align-items-start flex-wrap gap-2">
+            <div>
+              <h5>${b.room_name}</h5>
+              <p><i class="bi bi-hash me-1"></i>${b.booking_code}</p>
+            </div>
+            <div class="d-flex gap-2 flex-wrap">
+              ${getStatusBadge(b.status)}
+              ${getStatusBadge(b.payment_status || 'pending')}
+            </div>
+          </div>
+          <div class="booking-body">
+            <div class="row g-3 mb-3">
+              <div class="col-sm-3 col-6">
+                <div class="text-muted" style="font-size:0.75rem;font-weight:600;text-transform:uppercase;">Tipe</div>
+                <div class="fw-600" style="font-size:0.9rem;">${b.room_type} Room</div>
+              </div>
+              <div class="col-sm-3 col-6">
+                <div class="text-muted" style="font-size:0.75rem;font-weight:600;text-transform:uppercase;">Check-in</div>
+                <div class="fw-600" style="font-size:0.9rem;">${formatDate(b.check_in)}</div>
+              </div>
+              <div class="col-sm-3 col-6">
+                <div class="text-muted" style="font-size:0.75rem;font-weight:600;text-transform:uppercase;">Check-out</div>
+                <div class="fw-600" style="font-size:0.9rem;">${formatDate(b.check_out)}</div>
+              </div>
+              <div class="col-sm-3 col-6">
+                <div class="text-muted" style="font-size:0.75rem;font-weight:600;text-transform:uppercase;">Durasi</div>
+                <div class="fw-600" style="font-size:0.9rem;">${nights} malam</div>
+              </div>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+              <div>
+                <span class="text-muted" style="font-size:0.82rem;">Total Tagihan: </span>
+                <span class="fw-800" style="font-size:1.2rem;color:var(--secondary);">${formatRupiah(b.total_price)}</span>
+                ${b.payment_method ? `<span class="text-muted ms-2" style="font-size:0.78rem;">via ${b.payment_method}</span>` : ''}
+              </div>
+              <div class="d-flex gap-2 flex-wrap">
+                ${hasProof ? `<button class="btn btn-outline-primary btn-sm" onclick="showProof('${b.proof_image}')" style="border-radius:8px;"><i class="bi bi-image me-1"></i>Lihat Bukti</button>` : ''}
+                ${canUpload ? `<a href="/booking-checkout.html?id=${b.booking_id}" class="btn btn-wan-secondary btn-sm"><i class="bi bi-upload me-1"></i>Upload Bukti</a>` : ''}
+              </div>
+            </div>
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  async function loadBookings() {
+    try {
+      allBookings = await api.get('/bookings/my');
+      renderBookings(allBookings);
+    } catch(err) {
+      document.getElementById('booking-list').innerHTML = `
+        <div class="no-data">
+          <i class="bi bi-exclamation-circle text-danger"></i>
+          <p>${err.message}</p>
+        </div>`;
+    }
+  }
+
+  loadBookings();
+</script>
+</body>
+</html>

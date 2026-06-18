@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Daftar Kamar — Wan Hotel</title>
+  <meta name="description" content="Temukan kamar hotel terbaik di Wan Hotel. Standard, Deluxe, Family dan Suite tersedia."/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
+  <link rel="stylesheet" href="/css/style.css"/>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-wan navbar-expand-lg">
+  <div class="container">
+    <a class="navbar-brand" href="/index.html">Wan<span>Hotel</span></a>
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navMenu">
+      <ul class="navbar-nav me-auto ms-3 gap-1">
+        <li class="nav-item"><a class="nav-link" href="/index.html"><i class="bi bi-house me-1"></i>Beranda</a></li>
+        <li class="nav-item"><a class="nav-link active" href="/rooms.html"><i class="bi bi-door-open me-1"></i>Kamar</a></li>
+      </ul>
+      <div id="nav-auth" class="d-flex align-items-center gap-2"></div>
+    </div>
+  </div>
+</nav>
+
+<!-- PAGE HEADER -->
+<div style="background:linear-gradient(135deg,#0064D2,#003F8A);padding:40px 0 30px;">
+  <div class="container">
+    <nav aria-label="breadcrumb" class="breadcrumb-wan mb-2">
+      <ol class="breadcrumb mb-0">
+        <li class="breadcrumb-item"><a href="/index.html" style="color:rgba(255,255,255,0.7);">Beranda</a></li>
+        <li class="breadcrumb-item active" style="color:#fff;">Kamar</li>
+      </ol>
+    </nav>
+    <h1 class="text-white fw-800 mb-1" style="font-size:1.8rem;font-weight:800;">Pilihan Kamar</h1>
+    <p style="color:rgba(255,255,255,0.8);margin:0;font-size:0.9rem;">Temukan kamar yang sesuai dengan kebutuhan Anda</p>
+  </div>
+</div>
+
+<!-- FILTER BAR -->
+<div style="background:#fff;border-bottom:1px solid #E5E7EB;padding:16px 0;position:sticky;top:64px;z-index:50;">
+  <div class="container">
+    <div class="row g-3 align-items-end">
+      <div class="col-sm-3 col-6">
+        <label class="form-label" style="font-size:0.78rem;font-weight:600;color:#6B7280;margin-bottom:4px;">TIPE KAMAR</label>
+        <select class="form-select form-select-sm" id="filter-type" style="border-radius:8px;">
+          <option value="">Semua Tipe</option>
+          <option value="Standard">Standard</option>
+          <option value="Deluxe">Deluxe</option>
+          <option value="Family">Family</option>
+          <option value="Suite">Suite</option>
+        </select>
+      </div>
+      <div class="col-sm-3 col-6">
+        <label class="form-label" style="font-size:0.78rem;font-weight:600;color:#6B7280;margin-bottom:4px;">STATUS</label>
+        <select class="form-select form-select-sm" id="filter-status" style="border-radius:8px;">
+          <option value="">Semua Status</option>
+          <option value="Available">Available</option>
+          <option value="Booked">Booked</option>
+        </select>
+      </div>
+      <div class="col-sm-3 col-6">
+        <label class="form-label" style="font-size:0.78rem;font-weight:600;color:#6B7280;margin-bottom:4px;">HARGA MAKS</label>
+        <select class="form-select form-select-sm" id="filter-price" style="border-radius:8px;">
+          <option value="">Semua Harga</option>
+          <option value="500000">≤ Rp 500.000</option>
+          <option value="750000">≤ Rp 750.000</option>
+          <option value="1200000">≤ Rp 1.200.000</option>
+        </select>
+      </div>
+      <div class="col-sm-3 col-6">
+        <button class="btn btn-wan-primary btn-sm w-100" onclick="applyFilter()">
+          <i class="bi bi-funnel me-1"></i>Filter
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ROOM GRID -->
+<section class="py-5">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div id="result-count" class="text-muted" style="font-size:0.88rem;"></div>
+      <div class="d-flex gap-2">
+        <button class="btn btn-sm btn-outline-secondary" onclick="setView('grid')" id="btn-grid" title="Grid View" style="border-radius:8px;">
+          <i class="bi bi-grid"></i>
+        </button>
+        <button class="btn btn-sm btn-outline-secondary" onclick="setView('list')" id="btn-list" title="List View" style="border-radius:8px;">
+          <i class="bi bi-list-ul"></i>
+        </button>
+      </div>
+    </div>
+    <div class="row g-4" id="room-grid">
+      <div class="col-12 text-center py-5">
+        <div class="spinner-border text-primary"></div>
+        <p class="mt-3 text-muted">Memuat kamar...</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer-wan">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="footer-brand">Wan<span>Hotel</span></div>
+        <p>Hotel nyaman dengan fasilitas lengkap untuk setiap kebutuhan Anda.</p>
+      </div>
+      <div class="col-md-2">
+        <h6>Kamar</h6>
+        <a href="?type=Standard">Standard Room</a>
+        <a href="?type=Deluxe">Deluxe Room</a>
+        <a href="?type=Family">Family Room</a>
+        <a href="?type=Suite">Suite Room</a>
+      </div>
+      <div class="col-md-3">
+        <h6>Akun</h6>
+        <a href="/login.html">Masuk</a>
+        <a href="/register.html">Daftar</a>
+        <a href="/booking-history.html">Riwayat Booking</a>
+      </div>
+      <div class="col-md-3">
+        <h6>Kontak</h6>
+        <p style="font-size:0.86rem;"><i class="bi bi-telephone me-2"></i>(021) 123-4567</p>
+        <p style="font-size:0.86rem;"><i class="bi bi-envelope me-2"></i>info@wanhotel.com</p>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2026 WanHotel. All rights reserved.</div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/js/api.js"></script>
+<script src="/js/auth.js"></script>
+<script>
+  updateNavbar();
+
+  const facilityIcons = {
+    'WiFi':'bi-wifi','AC':'bi-thermometer-snow','TV':'bi-tv',
+    'Breakfast':'bi-cup-hot','Water Heater':'bi-droplet-half',
+    'Bathtub':'bi-droplet','Minibar':'bi-cup-straw','Balcony':'bi-house-door'
+  };
+
+  let allRooms = [];
+  let viewMode = 'grid';
+
+  // Read URL params
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('type')) document.getElementById('filter-type').value = params.get('type');
+  if (params.get('status')) document.getElementById('filter-status').value = params.get('status');
+
+  function setView(mode) {
+    viewMode = mode;
+    document.getElementById('btn-grid').classList.toggle('btn-primary', mode === 'grid');
+    document.getElementById('btn-list').classList.toggle('btn-primary', mode === 'list');
+    document.getElementById('btn-grid').classList.toggle('btn-outline-secondary', mode !== 'grid');
+    document.getElementById('btn-list').classList.toggle('btn-outline-secondary', mode !== 'list');
+    renderRooms(getFiltered());
+  }
+
+  function getFiltered() {
+    const type   = document.getElementById('filter-type').value;
+    const status = document.getElementById('filter-status').value;
+    const price  = parseFloat(document.getElementById('filter-price').value) || Infinity;
+    return allRooms.filter(r =>
+      (!type   || r.type   === type) &&
+      (!status || r.status === status) &&
+      r.price <= price
+    );
+  }
+
+  function applyFilter() { renderRooms(getFiltered()); }
+
+  function renderRooms(rooms) {
+    const grid = document.getElementById('room-grid');
+    document.getElementById('result-count').textContent = `Menampilkan ${rooms.length} kamar`;
+
+    if (rooms.length === 0) {
+      grid.innerHTML = `<div class="col-12 no-data"><i class="bi bi-door-closed"></i><p>Tidak ada kamar yang sesuai filter.</p></div>`;
+      return;
+    }
+
+    if (viewMode === 'list') {
+      grid.innerHTML = rooms.map(r => renderListCard(r)).join('');
+      grid.className = 'row g-3';
+    } else {
+      grid.innerHTML = rooms.map(r => renderGridCard(r)).join('');
+      grid.className = 'row g-4';
+    }
+  }
+
+  function renderGridCard(r) {
+    const img = r.images?.length > 0
+      ? `${r.images[0].image_url}`
+      : `https://placehold.co/400x220/0064D2/ffffff?text=${encodeURIComponent(r.type)}`;
+    const statusCls = r.status === 'Available' ? 'badge-available' : 'badge-booked';
+    const facilities = (r.facilities || []).slice(0,4).map(f =>
+      `<span class="facility-badge"><i class="bi ${facilityIcons[f.name]||'bi-check'} me-1"></i>${f.name}</span>`
+    ).join('');
+    return `
+      <div class="col-lg-3 col-md-6">
+        <div class="room-card h-100">
+          <div class="img-wrapper">
+            <img src="${img}" alt="${r.name}" loading="lazy" onerror="this.src='https://placehold.co/400x220/0064D2/ffffff?text=No+Image'"/>
+            <span class="badge-status ${statusCls}">${r.status}</span>
+          </div>
+          <div class="card-body d-flex flex-column" style="padding:18px;">
+            <div class="room-type-label">${r.type} Room</div>
+            <div class="room-name">${r.name}</div>
+            <div class="room-price">${formatRupiah(r.price)}<small>/malam</small></div>
+            <div class="room-capacity my-2"><i class="bi bi-people me-1"></i>Maks. ${r.capacity} tamu</div>
+            <div class="mb-3">${facilities}</div>
+            <div class="mt-auto d-flex gap-2">
+              <a href="/room-detail.html?id=${r.room_id}" class="btn btn-outline-primary btn-sm flex-fill" style="border-radius:8px;">Detail</a>
+              ${r.status === 'Available'
+                ? `<a href="/room-detail.html?id=${r.room_id}" class="btn btn-wan-secondary btn-sm flex-fill">Booking</a>`
+                : `<button class="btn btn-sm flex-fill" disabled style="background:#f3f4f6;color:#9ca3af;border-radius:8px;">Penuh</button>`}
+            </div>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  function renderListCard(r) {
+    const img = r.images?.length > 0
+      ? `${r.images[0].image_url}`
+      : `https://placehold.co/200x140/0064D2/ffffff?text=${encodeURIComponent(r.type)}`;
+    const statusCls = r.status === 'Available' ? 'badge-available' : 'badge-booked';
+    const facilities = (r.facilities || []).map(f =>
+      `<span class="facility-badge"><i class="bi ${facilityIcons[f.name]||'bi-check'} me-1"></i>${f.name}</span>`
+    ).join('');
+    return `
+      <div class="col-12">
+        <div class="room-card" style="border-radius:12px;">
+          <div class="row g-0">
+            <div class="col-md-3" style="position:relative;overflow:hidden;border-radius:12px 0 0 12px;min-height:160px;">
+              <img src="${img}" alt="${r.name}" style="width:100%;height:100%;object-fit:cover;" onerror="this.src='https://placehold.co/200x140/0064D2/ffffff?text=No+Image'"/>
+              <span class="badge-status ${statusCls}" style="position:absolute;top:10px;right:10px;">${r.status}</span>
+            </div>
+            <div class="col-md-9 d-flex flex-column" style="padding:20px;">
+              <div class="d-flex justify-content-between align-items-start">
+                <div>
+                  <div class="room-type-label">${r.type} Room • No. ${r.room_number}</div>
+                  <div class="room-name fs-5">${r.name}</div>
+                  <div class="room-capacity text-muted mb-2"><i class="bi bi-people me-1"></i>Maks. ${r.capacity} tamu</div>
+                  <div>${facilities}</div>
+                </div>
+                <div class="text-end ms-3">
+                  <div class="room-price">${formatRupiah(r.price)}</div>
+                  <small class="text-muted">per malam</small>
+                </div>
+              </div>
+              <div class="d-flex gap-2 mt-3">
+                <a href="/room-detail.html?id=${r.room_id}" class="btn btn-outline-primary btn-sm px-4" style="border-radius:8px;">Lihat Detail</a>
+                ${r.status === 'Available'
+                  ? `<a href="/room-detail.html?id=${r.room_id}" class="btn btn-wan-secondary btn-sm px-4">Booking Sekarang</a>`
+                  : `<button class="btn btn-sm px-4" disabled style="background:#f3f4f6;color:#9ca3af;border-radius:8px;">Tidak Tersedia</button>`}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  async function loadRooms() {
+    try {
+      allRooms = await api.get('/rooms');
+      renderRooms(getFiltered());
+    } catch (err) {
+      document.getElementById('room-grid').innerHTML = `
+        <div class="col-12 no-data">
+          <i class="bi bi-exclamation-circle text-danger"></i>
+          <p>Gagal memuat data. Pastikan server backend berjalan di port 5000.</p>
+        </div>`;
+    }
+  }
+
+  loadRooms();
+  document.getElementById('btn-grid').classList.add('btn-primary');
+  document.getElementById('btn-grid').classList.remove('btn-outline-secondary');
+</script>
+</body>
+</html>

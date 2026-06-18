@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wan Hotel — Penginapan Terbaik untuk Perjalanan Anda</title>
+    <meta name="description"
+        content="Wan Hotel menawarkan kamar Standard, Deluxe, Family dan Suite dengan harga terjangkau. Booking mudah, cepat, dan aman." />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <link rel="stylesheet" href="/css/style.css" />
+</head>
+
+<body>
+
+    <!-- ===== NAVBAR ===== -->
+    <nav class="navbar navbar-wan navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="/index.html">Wan<span>Hotel</span></a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navMenu">
+                <ul class="navbar-nav me-auto ms-3 gap-1">
+                    <li class="nav-item"><a class="nav-link active" href="/index.html"><i
+                                class="bi bi-house me-1"></i>Beranda</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/rooms.html"><i
+                                class="bi bi-door-open me-1"></i>Kamar</a></li>
+                </ul>
+                <div id="nav-auth" class="d-flex align-items-center gap-2"></div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ===== HERO ===== -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-6 hero-content">
+                    <span class="hero-badge"><i class="bi bi-star-fill me-1"></i> Hotel Terpercaya di Kota Kami</span>
+                    <h1 class="hero-title">Temukan Kamar<br>Impian Anda di<br><span style="color:#FFB347;">Wan
+                            Hotel</span></h1>
+                    <p class="hero-subtitle">Nikmati kenyamanan menginap dengan fasilitas premium, pelayanan terbaik,
+                        dan harga yang terjangkau.</p>
+                    <div class="d-flex gap-3 flex-wrap">
+                        <a href="/rooms.html" class="btn btn-wan-secondary btn-lg px-5">
+                            <i class="bi bi-search me-2"></i>Cari Kamar
+                        </a>
+                        <a href="#section-rooms" class="btn btn-lg px-4"
+                            style="background:rgba(255,255,255,0.15);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:8px;">
+                            <i class="bi bi-arrow-down me-2"></i>Lihat Kamar
+                        </a>
+                    </div>
+                    <div class="d-flex gap-4 mt-4">
+                        <div class="text-white">
+                            <div class="fw-800 fs-4" style="font-weight:800;" id="stat-rooms">4</div>
+                            <div style="font-size:0.82rem;opacity:0.75;">Tipe Kamar</div>
+                        </div>
+                        <div style="width:1px;background:rgba(255,255,255,0.2);"></div>
+                        <div class="text-white">
+                            <div class="fw-800 fs-4" style="font-weight:800;" id="stat-customers">10+</div>
+                            <div style="font-size:0.82rem;opacity:0.75;">Tamu Puas</div>
+                        </div>
+                        <div style="width:1px;background:rgba(255,255,255,0.2);"></div>
+                        <div class="text-white">
+                            <div class="fw-800 fs-4" style="font-weight:800;">24/7</div>
+                            <div style="font-size:0.82rem;opacity:0.75;">Layanan</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="hero-search-card">
+                        <h5 class="fw-700 mb-4" style="font-weight:700;"><i
+                                class="bi bi-calendar-check text-primary me-2"></i>Cek Ketersediaan Kamar</h5>
+                        <div class="row g-3">
+                            <div class="col-sm-6">
+                                <label class="form-label fw-semibold" style="font-size:0.85rem;">Check-in</label>
+                                <input type="date" class="form-control" id="search-checkin"
+                                    style="border-radius:8px;" />
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="form-label fw-semibold" style="font-size:0.85rem;">Check-out</label>
+                                <input type="date" class="form-control" id="search-checkout"
+                                    style="border-radius:8px;" />
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="form-label fw-semibold" style="font-size:0.85rem;">Tipe Kamar</label>
+                                <select class="form-select" id="search-type" style="border-radius:8px;">
+                                    <option value="">Semua Tipe</option>
+                                    <option value="Standard">Standard</option>
+                                    <option value="Deluxe">Deluxe</option>
+                                    <option value="Family">Family</option>
+                                    <option value="Suite">Suite</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="form-label fw-semibold" style="font-size:0.85rem;">Jumlah Tamu</label>
+                                <select class="form-select" id="search-guests" style="border-radius:8px;">
+                                    <option value="1">1 Tamu</option>
+                                    <option value="2" selected>2 Tamu</option>
+                                    <option value="3">3 Tamu</option>
+                                    <option value="4">4 Tamu</option>
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <button class="btn btn-wan-primary w-100 py-2" onclick="searchRooms()">
+                                    <i class="bi bi-search me-2"></i>Cari Kamar Sekarang
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== ROOM TYPES QUICK NAV ===== -->
+    <section class="py-4" style="background:#fff;border-bottom:1px solid #E5E7EB;">
+        <div class="container">
+            <div class="d-flex gap-3 flex-wrap justify-content-center">
+                <a href="/rooms.html?type=Standard" class="btn btn-outline-primary btn-sm px-4"
+                    style="border-radius:20px;">
+                    <i class="bi bi-door-closed me-1"></i>Standard
+                </a>
+                <a href="/rooms.html?type=Deluxe" class="btn btn-outline-primary btn-sm px-4"
+                    style="border-radius:20px;">
+                    <i class="bi bi-stars me-1"></i>Deluxe
+                </a>
+                <a href="/rooms.html?type=Family" class="btn btn-outline-primary btn-sm px-4"
+                    style="border-radius:20px;">
+                    <i class="bi bi-people me-1"></i>Family
+                </a>
+                <a href="/rooms.html?type=Suite" class="btn btn-outline-primary btn-sm px-4"
+                    style="border-radius:20px;">
+                    <i class="bi bi-gem me-1"></i>Suite
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== ROOM LIST ===== -->
+    <section class="py-5" id="section-rooms">
+        <div class="container">
+            <div class="text-center mb-5">
+                <div class="section-divider mx-auto"></div>
+                <h2 class="section-title">Pilihan Kamar Kami</h2>
+                <p class="section-subtitle">Temukan kamar yang sesuai dengan kebutuhan dan anggaran Anda</p>
+            </div>
+            <div class="row g-4" id="room-list">
+                <!-- Filled by JS -->
+                <div class="col-12 text-center py-5">
+                    <div class="spinner-border text-primary"></div>
+                    <p class="mt-3 text-muted">Memuat data kamar...</p>
+                </div>
+            </div>
+            <div class="text-center mt-4">
+                <a href="/rooms.html" class="btn btn-outline-primary px-5" style="border-radius:8px;">
+                    Lihat Semua Kamar <i class="bi bi-arrow-right ms-2"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== WHY US ===== -->
+    <section class="py-5" style="background:#fff;">
+        <div class="container">
+            <div class="text-center mb-5">
+                <div class="section-divider mx-auto"></div>
+                <h2 class="section-title">Mengapa Memilih Wan Hotel?</h2>
+                <p class="section-subtitle">Kami berkomitmen memberikan pengalaman menginap terbaik</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-3 col-sm-6">
+                    <div class="feature-item">
+                        <div class="feature-icon"><i class="bi bi-shield-check"></i></div>
+                        <h5>Terpercaya</h5>
+                        <p>Sistem booking aman dengan konfirmasi langsung dan pembayaran terverifikasi.</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="feature-item">
+                        <div class="feature-icon" style="background:#FFF3E0;color:#FF6900;"><i class="bi bi-wifi"></i>
+                        </div>
+                        <h5>Fasilitas Lengkap</h5>
+                        <p>WiFi, AC, TV, sarapan, water heater, dan berbagai fasilitas premium lainnya.</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="feature-item">
+                        <div class="feature-icon" style="background:#E8F5E9;color:#16A34A;"><i
+                                class="bi bi-clock-history"></i></div>
+                        <h5>24/7 Layanan</h5>
+                        <p>Resepsionis siap melayani Anda kapan saja, siang dan malam tanpa henti.</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="feature-item">
+                        <div class="feature-icon" style="background:#F3E8FF;color:#7C3AED;"><i
+                                class="bi bi-cash-coin"></i></div>
+                        <h5>Bayar di Tempat</h5>
+                        <p>Pembayaran dilakukan secara <strong>Cash saat check in</strong>. Mudah, praktis, tanpa ribet
+                            transfer.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== CTA BANNER ===== -->
+    <section class="py-5" style="background:linear-gradient(135deg,#0064D2,#003F8A);">
+        <div class="container text-center">
+            <h2 class="text-white fw-800 mb-3" style="font-weight:800;">Siap Memesan Kamar?</h2>
+            <p class="text-white mb-4" style="opacity:0.85;">Dapatkan pengalaman menginap terbaik dengan harga yang
+                terjangkau. Daftar sekarang dan nikmati kemudahan booking.</p>
+            <div class="d-flex gap-3 justify-content-center flex-wrap">
+                <a href="/rooms.html" class="btn btn-wan-secondary btn-lg px-5">
+                    <i class="bi bi-door-open me-2"></i>Lihat Kamar
+                </a>
+                <a href="/register.html" class="btn btn-lg px-5"
+                    style="background:rgba(255,255,255,0.15);color:#fff;border:1px solid rgba(255,255,255,0.35);border-radius:8px;font-weight:600;"
+                    id="cta-register">
+                    <i class="bi bi-person-plus me-2"></i>Daftar Gratis
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer-wan">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="footer-brand">Wan<span>Hotel</span></div>
+                    <p>Hotel nyaman dengan fasilitas lengkap. Lokasi strategis, harga terjangkau, pelayanan ramah dan
+                        profesional.</p>
+                    <div class="d-flex gap-3 mt-3">
+                        <a href="#" style="color:rgba(255,255,255,0.6);font-size:1.2rem;"><i
+                                class="bi bi-instagram"></i></a>
+                        <a href="#" style="color:rgba(255,255,255,0.6);font-size:1.2rem;"><i
+                                class="bi bi-facebook"></i></a>
+                        <a href="#" style="color:rgba(255,255,255,0.6);font-size:1.2rem;"><i
+                                class="bi bi-twitter-x"></i></a>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <h6>Kamar</h6>
+                    <a href="/rooms.html?type=Standard">Standard Room</a>
+                    <a href="/rooms.html?type=Deluxe">Deluxe Room</a>
+                    <a href="/rooms.html?type=Family">Family Room</a>
+                    <a href="/rooms.html?type=Suite">Suite Room</a>
+                </div>
+                <div class="col-md-2">
+                    <h6>Layanan</h6>
+                    <a href="/rooms.html">Cari Kamar</a>
+                    <a href="/booking-history.html">Riwayat Booking</a>
+                    <a href="/profile.html">Profil Saya</a>
+                </div>
+                <div class="col-md-4">
+                    <h6>Kontak</h6>
+                    <p style="font-size:0.86rem;"><i class="bi bi-geo-alt me-2"></i>Jl. Merdeka No.1, Jakarta Pusat</p>
+                    <p style="font-size:0.86rem;"><i class="bi bi-telephone me-2"></i>(021) 123-4567</p>
+                    <p style="font-size:0.86rem;"><i class="bi bi-envelope me-2"></i>info@wanhotel.com</p>
+                    <p style="font-size:0.86rem;"><i class="bi bi-clock me-2"></i>Check-in: 14:00 | Check-out: 12:00</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                © 2026 WanHotel. All rights reserved. | Dibuat dengan <i class="bi bi-heart-fill text-danger"></i> untuk
+                kenyamanan Anda.
+            </div>
+        </div>
+    </footer>
+
+    <style>
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/api.js"></script>
+    <script src="/js/auth.js"></script>
+    <script>
+        // Init
+        updateNavbar();
+
+        // Set default dates
+        const today = new Date();
+        const tomorrow = new Date(today); tomorrow.setDate(tomorrow.getDate() + 1);
+        const dayAfter = new Date(today); dayAfter.setDate(dayAfter.getDate() + 2);
+        document.getElementById('search-checkin').value = tomorrow.toISOString().slice(0, 10);
+        document.getElementById('search-checkout').value = dayAfter.toISOString().slice(0, 10);
+
+        // Hide CTA register if logged in
+        if (isLoggedIn()) {
+            const ctaReg = document.getElementById('cta-register');
+            if (ctaReg) ctaReg.style.display = 'none';
+        }
+
+        // Search function
+        function searchRooms() {
+            const ci = document.getElementById('search-checkin').value;
+            const co = document.getElementById('search-checkout').value;
+            const type = document.getElementById('search-type').value;
+            const guests = document.getElementById('search-guests').value;
+            const params = new URLSearchParams();
+            if (ci) params.set('checkin', ci);
+            if (co) params.set('checkout', co);
+            if (type) params.set('type', type);
+            if (guests) params.set('guests', guests);
+            window.location.href = `/rooms.html?${params.toString()}`;
+        }
+
+        // Load rooms
+        async function loadRooms() {
+            try {
+                const rooms = await api.get('/rooms');
+                const container = document.getElementById('room-list');
+
+                if (!rooms || rooms.length === 0) {
+                    container.innerHTML = '<div class="col-12 no-data"><i class="bi bi-door-closed"></i><p>Tidak ada kamar tersedia saat ini.</p></div>';
+                    return;
+                }
+
+                const facilityIcons = {
+                    'WiFi': 'bi-wifi', 'AC': 'bi-thermometer-snow', 'TV': 'bi-tv',
+                    'Breakfast': 'bi-cup-hot', 'Water Heater': 'bi-droplet-half',
+                    'Bathtub': 'bi-droplet', 'Minibar': 'bi-cup-straw', 'Balcony': 'bi-house-door'
+                };
+
+                container.innerHTML = rooms.slice(0, 4).map(r => {
+                    const img = r.images && r.images.length > 0
+                        ? `${r.images[0].image_url}`
+                        : `https://placehold.co/400x220/0064D2/ffffff?text=${encodeURIComponent(r.type)}`;
+                    const statusCls = r.status === 'Available' ? 'badge-available' : 'badge-booked';
+                    const facilities = (r.facilities || []).slice(0, 3).map(f =>
+                        `<span class="facility-badge"><i class="bi ${facilityIcons[f.name] || 'bi-check'} me-1"></i>${f.name}</span>`
+                    ).join('');
+
+                    return `
+          <div class="col-lg-3 col-md-6">
+            <div class="room-card h-100">
+              <div class="img-wrapper">
+                <img src="${img}" alt="${r.name}" loading="lazy" onerror="this.src='https://placehold.co/400x220/0064D2/ffffff?text=No+Image'"/>
+                <span class="badge-status ${statusCls}">${r.status}</span>
+              </div>
+              <div class="card-body d-flex flex-column">
+                <div class="room-type-label">${r.type} Room</div>
+                <div class="room-name">${r.name}</div>
+                <div class="room-price">${formatRupiah(r.price)}<small>/malam</small></div>
+                <div class="room-capacity mt-1 mb-2"><i class="bi bi-people me-1"></i>Maks. ${r.capacity} tamu</div>
+                <div class="mb-3">${facilities}</div>
+                <div class="mt-auto d-flex gap-2">
+                  <a href="/room-detail.html?id=${r.room_id}" class="btn btn-outline-primary btn-sm flex-fill" style="border-radius:8px;">Lihat Detail</a>
+                  ${r.status === 'Available'
+                            ? `<a href="/room-detail.html?id=${r.room_id}" class="btn btn-wan-secondary btn-sm flex-fill">Booking</a>`
+                            : `<button class="btn btn-sm flex-fill" disabled style="background:#f3f4f6;color:#9ca3af;border-radius:8px;">Tidak Tersedia</button>`
+                        }
+                </div>
+              </div>
+            </div>
+          </div>`;
+                }).join('');
+
+            } catch (err) {
+                document.getElementById('room-list').innerHTML = `
+        <div class="col-12 no-data">
+          <i class="bi bi-exclamation-circle text-danger"></i>
+          <p>Gagal memuat data kamar. Pastikan server berjalan.</p>
+        </div>`;
+            }
+        }
+
+        loadRooms();
+    </script>
+</body>
+
+</html>

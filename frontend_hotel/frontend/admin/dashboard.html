@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard Admin — Wan Hotel</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
+  <link rel="stylesheet" href="/css/style.css"/>
+  <style>
+    .chart-bar-wrap { display:flex; align-items:flex-end; gap:6px; height:80px; }
+    .chart-bar { flex:1; background:var(--primary); border-radius:4px 4px 0 0; min-width:20px; transition:all 0.4s ease; }
+    .chart-bar:hover { opacity:0.8; }
+    .room-status-pill { padding:6px 14px; border-radius:20px; font-size:0.78rem; font-weight:700; }
+    .quick-action { display:flex; align-items:center; gap:12px; padding:12px 0; border-bottom:1px solid var(--border-color); text-decoration:none; color:var(--text-primary); transition:var(--transition); }
+    .quick-action:hover { color:var(--primary); padding-left:4px; }
+    .quick-action:last-child { border-bottom:none; }
+  </style>
+</head>
+<body>
+<div class="admin-wrapper">
+
+  <!-- SIDEBAR -->
+  <aside class="admin-sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <h4>Wan<span>Hotel</span></h4>
+      <small>Admin Panel</small>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Utama</div>
+      <div class="nav-item">
+        <a href="dashboard.html" class="sidebar-link active">
+          <i class="bi bi-speedometer2"></i> Dashboard
+        </a>
+      </div>
+
+      <div class="nav-section-label">Master Data</div>
+      <div class="nav-item">
+        <a href="rooms.html" class="sidebar-link">
+          <i class="bi bi-door-open"></i> Kamar
+        </a>
+      </div>
+      <div class="nav-item">
+        <a href="customers.html" class="sidebar-link">
+          <i class="bi bi-people"></i> Customer
+        </a>
+      </div>
+
+      <div class="nav-section-label">Transaksi</div>
+      <div class="nav-item">
+        <a href="bookings.html" class="sidebar-link">
+          <i class="bi bi-calendar-check"></i> Booking
+        </a>
+      </div>
+      <div class="nav-item">
+        <a href="payments.html" class="sidebar-link">
+          <i class="bi bi-credit-card"></i> Pembayaran
+        </a>
+      </div>
+
+      <div class="nav-section-label">Laporan</div>
+      <div class="nav-item">
+        <a href="reports.html" class="sidebar-link">
+          <i class="bi bi-bar-chart"></i> Laporan
+        </a>
+      </div>
+
+      <div class="nav-section-label">Lainnya</div>
+      <div class="nav-item">
+        <a href="/index.html" class="sidebar-link">
+          <i class="bi bi-globe"></i> Lihat Website
+        </a>
+      </div>
+      <div class="nav-item">
+        <a href="#" class="sidebar-link text-danger" onclick="logout(); return false;">
+          <i class="bi bi-box-arrow-right"></i> Keluar
+        </a>
+      </div>
+    </nav>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <div class="admin-content">
+    <!-- TOPBAR -->
+    <div class="admin-topbar">
+      <div class="d-flex align-items-center gap-3">
+        <button class="btn btn-sm btn-outline-secondary d-lg-none" onclick="toggleSidebar()" style="border-radius:8px;">
+          <i class="bi bi-list"></i>
+        </button>
+        <div>
+          <div class="page-title">Dashboard</div>
+          <div style="font-size:0.75rem;color:#9CA3AF;" id="date-display"></div>
+        </div>
+      </div>
+      <div id="admin-user-info"></div>
+    </div>
+
+    <!-- MAIN -->
+    <div class="admin-main">
+
+      <!-- Welcome Banner -->
+      <div class="mb-4 p-4 rounded-3 text-white" style="background:linear-gradient(135deg,#0064D2,#003F8A);">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+          <div>
+            <h4 class="fw-800 mb-1" style="font-weight:800;">Selamat Datang, <span id="admin-greeting">Admin</span>! 👋</h4>
+            <p class="mb-0" style="opacity:0.85;font-size:0.9rem;">Berikut ringkasan aktivitas hotel hari ini.</p>
+          </div>
+          <button class="btn btn-sm" style="background:rgba(255,255,255,0.15);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:8px;" onclick="loadDashboard()">
+            <i class="bi bi-arrow-clockwise me-1"></i>Refresh
+          </button>
+        </div>
+      </div>
+
+      <!-- STAT CARDS -->
+      <div class="row g-3 mb-4">
+        <div class="col-xl-3 col-sm-6">
+          <div class="stat-card" style="border-left-color:#0064D2;">
+            <div class="stat-icon" style="background:#E8F0FB;color:#0064D2;"><i class="bi bi-door-open"></i></div>
+            <div>
+              <div class="stat-number" id="stat-rooms">-</div>
+              <div class="stat-label">Total Kamar</div>
+              <div style="font-size:0.72rem;margin-top:2px;" id="stat-rooms-sub" class="text-muted"></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-sm-6">
+          <div class="stat-card" style="border-left-color:#16A34A;">
+            <div class="stat-icon" style="background:#DCFCE7;color:#16A34A;"><i class="bi bi-people"></i></div>
+            <div>
+              <div class="stat-number" id="stat-customers">-</div>
+              <div class="stat-label">Total Customer</div>
+              <div style="font-size:0.72rem;margin-top:2px;" class="text-muted">Terdaftar</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-sm-6">
+          <div class="stat-card" style="border-left-color:#CA8A04;">
+            <div class="stat-icon" style="background:#FEF9C3;color:#CA8A04;"><i class="bi bi-calendar-check"></i></div>
+            <div>
+              <div class="stat-number" id="stat-bookings">-</div>
+              <div class="stat-label">Total Booking</div>
+              <div style="font-size:0.72rem;margin-top:2px;" id="stat-bookings-sub" class="text-muted"></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-sm-6">
+          <div class="stat-card" style="border-left-color:#FF6900;">
+            <div class="stat-icon" style="background:#FFF3E0;color:#FF6900;"><i class="bi bi-cash-stack"></i></div>
+            <div>
+              <div class="stat-number" style="font-size:1.3rem;" id="stat-revenue">-</div>
+              <div class="stat-label">Total Pendapatan</div>
+              <div style="font-size:0.72rem;margin-top:2px;" class="text-muted">Dari pembayaran lunas</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECOND ROW -->
+      <div class="row g-4 mb-4">
+        <!-- Room Status -->
+        <div class="col-lg-5">
+          <div class="content-card h-100">
+            <div class="content-card-header">
+              <h5><i class="bi bi-door-open me-2 text-primary"></i>Status Kamar</h5>
+              <a href="rooms.html" style="font-size:0.82rem;color:var(--primary);">Kelola <i class="bi bi-arrow-right"></i></a>
+            </div>
+            <div id="room-status-list" class="content-card-body">
+              <div class="text-center py-3"><div class="spinner-border spinner-border-sm text-primary"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pending Actions -->
+        <div class="col-lg-4">
+          <div class="content-card h-100">
+            <div class="content-card-header">
+              <h5><i class="bi bi-bell me-2 text-warning"></i>Perlu Tindakan</h5>
+            </div>
+            <div class="content-card-body">
+              <div class="quick-action" onclick="window.location='payments.html'">
+                <div style="width:36px;height:36px;background:#FEF9C3;color:#CA8A04;border-radius:8px;display:flex;align-items:center;justify-content:center;">
+                  <i class="bi bi-credit-card"></i>
+                </div>
+                <div class="flex-1">
+                  <div class="fw-600" style="font-size:0.88rem;">Verifikasi Pembayaran</div>
+                  <div class="text-muted" style="font-size:0.78rem;"><span id="pending-payments" class="text-warning fw-700">-</span> menunggu verifikasi</div>
+                </div>
+                <i class="bi bi-chevron-right text-muted"></i>
+              </div>
+              <div class="quick-action" onclick="window.location='bookings.html'">
+                <div style="width:36px;height:36px;background:#DBEAFE;color:#2563EB;border-radius:8px;display:flex;align-items:center;justify-content:center;">
+                  <i class="bi bi-calendar"></i>
+                </div>
+                <div class="flex-1">
+                  <div class="fw-600" style="font-size:0.88rem;">Booking Pending</div>
+                  <div class="text-muted" style="font-size:0.78rem;"><span id="pending-bookings" class="text-primary fw-700">-</span> booking belum diproses</div>
+                </div>
+                <i class="bi bi-chevron-right text-muted"></i>
+              </div>
+              <div class="quick-action" onclick="window.location='reports.html'">
+                <div style="width:36px;height:36px;background:#DCFCE7;color:#16A34A;border-radius:8px;display:flex;align-items:center;justify-content:center;">
+                  <i class="bi bi-bar-chart"></i>
+                </div>
+                <div>
+                  <div class="fw-600" style="font-size:0.88rem;">Laporan Transaksi</div>
+                  <div class="text-muted" style="font-size:0.78rem;">Lihat & cetak laporan</div>
+                </div>
+                <i class="bi bi-chevron-right text-muted ms-auto"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Payment Summary -->
+        <div class="col-lg-3">
+          <div class="content-card h-100">
+            <div class="content-card-header">
+              <h5><i class="bi bi-pie-chart me-2 text-primary"></i>Pembayaran</h5>
+            </div>
+            <div class="content-card-body">
+              <div class="mb-3">
+                <div class="d-flex justify-content-between mb-1" style="font-size:0.82rem;">
+                  <span class="text-muted">Lunas</span>
+                  <span class="fw-700 text-success" id="pay-paid">-</span>
+                </div>
+                <div class="progress" style="height:8px;border-radius:4px;">
+                  <div class="progress-bar bg-success" id="pay-bar-paid" style="width:0%;border-radius:4px;"></div>
+                </div>
+              </div>
+              <div>
+                <div class="d-flex justify-content-between mb-1" style="font-size:0.82rem;">
+                  <span class="text-muted">Pending</span>
+                  <span class="fw-700 text-warning" id="pay-pending">-</span>
+                </div>
+                <div class="progress" style="height:8px;border-radius:4px;">
+                  <div class="progress-bar bg-warning" id="pay-bar-pending" style="width:0%;border-radius:4px;"></div>
+                </div>
+              </div>
+              <hr/>
+              <div class="d-flex justify-content-between align-items-center">
+                <span class="text-muted" style="font-size:0.82rem;">Total Lunas</span>
+                <span class="fw-700 text-success" id="pay-total" style="font-size:0.9rem;">-</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Bookings -->
+      <div class="content-card">
+        <div class="content-card-header">
+          <h5><i class="bi bi-clock-history me-2 text-primary"></i>Booking Terbaru</h5>
+          <a href="bookings.html" style="font-size:0.82rem;color:var(--primary);">Lihat Semua <i class="bi bi-arrow-right"></i></a>
+        </div>
+        <div style="overflow-x:auto;">
+          <table class="table-wan w-100" id="recent-bookings-table">
+            <thead>
+              <tr>
+                <th>Kode Booking</th>
+                <th>Customer</th>
+                <th>Kamar</th>
+                <th>Check-in</th>
+                <th>Check-out</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>Bayar</th>
+              </tr>
+            </thead>
+            <tbody id="recent-bookings-body">
+              <tr><td colspan="8" class="text-center py-4"><div class="spinner-border spinner-border-sm text-primary"></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div><!-- /admin-main -->
+  </div><!-- /admin-content -->
+</div><!-- /admin-wrapper -->
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/js/api.js"></script>
+<script src="/js/auth.js"></script>
+<script>
+  if (!requireAdmin()) {}
+  updateAdminTopbar();
+
+  const user = getUser();
+  if (user) document.getElementById('admin-greeting').textContent = user.name || user.username;
+
+  // Date display
+  document.getElementById('date-display').textContent = new Date().toLocaleDateString('id-ID', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+
+  function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('show');
+  }
+
+  async function loadDashboard() {
+    try {
+      const [stats, roomsStatus] = await Promise.all([
+        api.get('/dashboard/stats'),
+        api.get('/dashboard/rooms-status'),
+      ]);
+
+      // Stat cards
+      document.getElementById('stat-rooms').textContent     = stats.rooms.total;
+      document.getElementById('stat-rooms-sub').textContent = `${stats.rooms.available} Available · ${stats.rooms.booked} Booked`;
+      document.getElementById('stat-customers').textContent = stats.customers.total;
+      document.getElementById('stat-bookings').textContent  = stats.bookings.total;
+      document.getElementById('stat-bookings-sub').textContent = `${stats.bookings.confirmed} Confirmed · ${stats.bookings.pending} Pending`;
+      document.getElementById('stat-revenue').textContent   = formatRupiah(stats.revenue.total);
+
+      // Pending actions
+      document.getElementById('pending-payments').textContent = stats.payments.pending;
+      document.getElementById('pending-bookings').textContent  = stats.bookings.pending;
+
+      // Payment progress
+      const total = stats.payments.paid + stats.payments.pending || 1;
+      document.getElementById('pay-paid').textContent    = stats.payments.paid;
+      document.getElementById('pay-pending').textContent = stats.payments.pending;
+      document.getElementById('pay-bar-paid').style.width    = (stats.payments.paid / total * 100) + '%';
+      document.getElementById('pay-bar-pending').style.width = (stats.payments.pending / total * 100) + '%';
+      document.getElementById('pay-total').textContent = formatRupiah(stats.revenue.total);
+
+      // Room status list
+      const roomEl = document.getElementById('room-status-list');
+      roomEl.innerHTML = roomsStatus.map(r => `
+        <div class="d-flex justify-content-between align-items-center py-2 border-bottom" style="font-size:0.85rem;">
+          <div>
+            <span class="fw-600">${r.name}</span>
+            <span class="text-muted ms-1">No.${r.room_number}</span>
+          </div>
+          <div class="d-flex align-items-center gap-2">
+            ${r.current_guest ? `<span class="text-muted" style="font-size:0.75rem;">${r.current_guest}</span>` : ''}
+            <span class="room-status-pill ${r.status==='Available'?'s-available':'s-booked'}">${r.status}</span>
+          </div>
+        </div>`).join('');
+
+    } catch(err) {
+      showToast('Gagal memuat data dashboard: ' + err.message, 'error');
+    }
+  }
+
+  async function loadRecentBookings() {
+    try {
+      const bookings = await api.get('/bookings');
+      const tbody = document.getElementById('recent-bookings-body');
+      const recent = bookings.slice(0, 8);
+
+      if (recent.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="8" class="text-center text-muted py-4">Belum ada booking.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = recent.map(b => `
+        <tr>
+          <td><a href="bookings.html" class="text-primary fw-600" style="font-size:0.82rem;">${b.booking_code}</a></td>
+          <td style="font-size:0.85rem;">${b.customer_name}</td>
+          <td style="font-size:0.85rem;">${b.room_name}</td>
+          <td style="font-size:0.82rem;">${formatDate(b.check_in)}</td>
+          <td style="font-size:0.82rem;">${formatDate(b.check_out)}</td>
+          <td class="fw-600" style="font-size:0.85rem;">${formatRupiah(b.total_price)}</td>
+          <td>${getStatusBadge(b.status)}</td>
+          <td>${getStatusBadge(b.payment_status || 'pending')}</td>
+        </tr>`).join('');
+    } catch(err) {
+      document.getElementById('recent-bookings-body').innerHTML = '<tr><td colspan="8" class="text-center text-danger py-4">Gagal memuat data.</td></tr>';
+    }
+  }
+
+  loadDashboard();
+  loadRecentBookings();
+</script>
+</body>
+</html>
