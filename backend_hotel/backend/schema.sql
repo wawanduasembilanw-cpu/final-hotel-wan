@@ -115,23 +115,23 @@ CREATE TABLE payments (
 -- =============================================
 INSERT INTO users (name, username, email, password, role) VALUES
   ('Administrator','admin','admin@hotel.com',
-   '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lihO',
+   '$2b$10$ZFik0VkwMNLGuWzkZ8x7qeQn0KjdcTdHb7iu/vhsbUrWE7VB/V/EK',
    'admin');
 
 -- =============================================
 -- SEED: 10 CUSTOMER (password: admin123)
 -- =============================================
 INSERT INTO users (name, username, email, password, phone, address, role) VALUES
-  ('Budi Santoso',   'budi_santoso',   'budi@gmail.com',   '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lihO','081234567801','Jl. Merdeka No.1, Jakarta',    'customer'),
-  ('Siti Rahayu',    'siti_rahayu',    'siti@gmail.com',   '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lihO','081234567802','Jl. Sudirman No.2, Bandung',   'customer'),
-  ('Ahmad Fauzi',    'ahmad_fauzi',    'ahmad@gmail.com',  '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lihO','081234567803','Jl. Gatot Subroto No.3, Bekasi','customer'),
-  ('Dewi Lestari',   'dewi_lestari',   'dewi@gmail.com',   '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lihO','081234567804','Jl. Ahmad Yani No.4, Surabaya','customer'),
-  ('Rizky Pratama',  'rizky_pratama',  'rizky@gmail.com',  '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lihO','081234567805','Jl. Diponegoro No.5, Semarang','customer'),
-  ('Maya Indah',     'maya_indah',     'maya@gmail.com',   '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lihO','081234567806','Jl. Pahlawan No.6, Yogyakarta','customer'),
-  ('Hendra Wijaya',  'hendra_wijaya',  'hendra@gmail.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lihO','081234567807','Jl. Veteran No.7, Medan',      'customer'),
-  ('Fitri Handayani','fitri_handayani','fitri@gmail.com',  '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lihO','081234567808','Jl. Imam Bonjol No.8, Malang', 'customer'),
-  ('Doni Kurniawan', 'doni_kurniawan', 'doni@gmail.com',   '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lihO','081234567809','Jl. Hayam Wuruk No.9, Bali',   'customer'),
-  ('Rina Marlina',   'rina_marlina',   'rina@gmail.com',   '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lihO','081234567810','Jl. Kertajaya No.10, Makassar','customer');
+  ('Budi Santoso',   'budi_santoso',   'budi@gmail.com',   '$2b$10$ZFik0VkwMNLGuWzkZ8x7qeQn0KjdcTdHb7iu/vhsbUrWE7VB/V/EK','081234567801','Jl. Merdeka No.1, Jakarta',    'customer'),
+  ('Siti Rahayu',    'siti_rahayu',    'siti@gmail.com',   '$2b$10$ZFik0VkwMNLGuWzkZ8x7qeQn0KjdcTdHb7iu/vhsbUrWE7VB/V/EK','081234567802','Jl. Sudirman No.2, Bandung',   'customer'),
+  ('Ahmad Fauzi',    'ahmad_fauzi',    'ahmad@gmail.com',  '$2b$10$ZFik0VkwMNLGuWzkZ8x7qeQn0KjdcTdHb7iu/vhsbUrWE7VB/V/EK','081234567803','Jl. Gatot Subroto No.3, Bekasi','customer'),
+  ('Dewi Lestari',   'dewi_lestari',   'dewi@gmail.com',   '$2b$10$ZFik0VkwMNLGuWzkZ8x7qeQn0KjdcTdHb7iu/vhsbUrWE7VB/V/EK','081234567804','Jl. Ahmad Yani No.4, Surabaya','customer'),
+  ('Rizky Pratama',  'rizky_pratama',  'rizky@gmail.com',  '$2b$10$ZFik0VkwMNLGuWzkZ8x7qeQn0KjdcTdHb7iu/vhsbUrWE7VB/V/EK','081234567805','Jl. Diponegoro No.5, Semarang','customer'),
+  ('Maya Indah',     'maya_indah',     'maya@gmail.com',   '$2b$10$ZFik0VkwMNLGuWzkZ8x7qeQn0KjdcTdHb7iu/vhsbUrWE7VB/V/EK','081234567806','Jl. Pahlawan No.6, Yogyakarta','customer'),
+  ('Hendra Wijaya',  'hendra_wijaya',  'hendra@gmail.com', '$2b$10$ZFik0VkwMNLGuWzkZ8x7qeQn0KjdcTdHb7iu/vhsbUrWE7VB/V/EK','081234567807','Jl. Veteran No.7, Medan',      'customer'),
+  ('Fitri Handayani','fitri_handayani','fitri@gmail.com',  '$2b$10$ZFik0VkwMNLGuWzkZ8x7qeQn0KjdcTdHb7iu/vhsbUrWE7VB/V/EK','081234567808','Jl. Imam Bonjol No.8, Malang', 'customer'),
+  ('Doni Kurniawan', 'doni_kurniawan', 'doni@gmail.com',   '$2b$10$ZFik0VkwMNLGuWzkZ8x7qeQn0KjdcTdHb7iu/vhsbUrWE7VB/V/EK','081234567809','Jl. Hayam Wuruk No.9, Bali',   'customer'),
+  ('Rina Marlina',   'rina_marlina',   'rina@gmail.com',   '$2b$10$ZFik0VkwMNLGuWzkZ8x7qeQn0KjdcTdHb7iu/vhsbUrWE7VB/V/EK','081234567810','Jl. Kertajaya No.10, Makassar','customer');
 
 -- =============================================
 -- SEED: FASILITAS

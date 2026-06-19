@@ -144,4 +144,24 @@ router.post("/login", async (req, res) => {
 
 });
 
+/*
+=====================================
+GET /api/auth/force-reset
+Endpoint sementara untuk memperbaiki password admin di database online
+=====================================
+*/
+router.get("/force-reset", async (req, res) => {
+  try {
+    const hash = await bcrypt.hash("admin123", 10);
+    await pool.query(
+      `UPDATE users SET password = $1 WHERE username = 'admin'`,
+      [hash]
+    );
+    res.json({ message: "Password admin berhasil direset menjadi admin123" });
+  } catch (error) {
+    console.error("Reset error:", error);
+    res.status(500).json({ message: "Gagal mereset password admin." });
+  }
+});
+
 module.exports = router;
